@@ -5,14 +5,71 @@ body {
     font-family: 'Raleway', sans-serif !important;
 }
 
-/*Navbar*/
+/*Header + footer*/
 
+.navbar-brand,
 .navbar-item a {
     color: white !important;
+}
+
+.footer a {
+    font-size: 14px !important;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /*Accueil*/
 .title {
     text-align: center !important;
-    margin-top: 3rem !important;
+    margin: 3rem 0!important;
+}
+
+.add-text {
+    margin-left: 3rem;
+}
+
+.card {
+    text-align: center;
+    height: auto;
+    margin-bottom: 2rem;
+}
+
+.card h3 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.card img {
+    height: 10rem;
+    width: auto;
+}
+
+.card-btns {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-btns .btn-light {
+    margin-bottom: 1rem !important;
+}
+
+.col{
+    text-align: -webkit-center !important;
+}
+
+
+.three-lasts {
+    padding: 3rem;
+}
+
+
+@media (max-width: 480px)
+{
+    .add-text {
+        margin-left: 0;
+    }
 }
