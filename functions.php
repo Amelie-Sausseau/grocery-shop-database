@@ -119,34 +119,35 @@ function addToCart($article)
 
 function homeProducts()
 {
-    return [
-        new Article(
-            "0",
-            "Pommes",
-            "images/apples.jpg",
-            2.30,
-            "fruit",
-            "La pomme gala peut se déguster en tarte, au four, à cuisiner ou simplement à croquer !"
-        ),
-        new Article(
-            "1",
-            "Ananas",
-            "images/pineapples.jpg",
-            3,
-            "fruit",
-            "Pour rehausser le goût de vos diverses préparations, choisissez cet ananas Victoria. À la fois savoureux et rafraîchissant, il saura émerveiller vos papilles. Cet ananas victoria est ce qu'il vous faut pour apporter une touche d'exotisme à vos plats. "
+    //return [
+    //    new Article(
+    //        "0",
+    //        "Pommes",
+    //        "images/apples.jpg",
+    //        2.30,
+    //        "fruit",
+    //        "La pomme gala peut se déguster en tarte, au four, à cuisiner ou simplement à croquer !"
+    //    ),
+    //    new Article(
+    //        "1",
+    //        "Ananas",
+    //        "images/pineapples.jpg",
+    //        3,
+    //        "fruit",
+    //        "Pour rehausser le goût de vos diverses préparations, choisissez cet ananas Victoria. À la fois savoureux et rafraîchissant, il saura émerveiller vos papilles. Cet ananas victoria est ce qu'il vous faut pour apporter une touche d'exotisme à vos plats. "
 
-        ),
-
-        new Article(
-            "2",
-            "Fraises",
-            "images/strawberry.jpg",
-            2.50,
-            "fruit",
-            "Fraise juteuse, fondante et très parfumée, le parfait équilibre sucré et acidulé de la gariguette fait l’unanimité !"
-        ),
-    ];
+    //    ),
+    //
+    //    new Article(
+    //        "2",
+    //        "Fraises",
+    //        "images/strawberry.jpg",
+    //        2.50,
+    //        "fruit",
+    //        "Fraise juteuse, fondante et très parfumée, le parfait équilibre sucré et acidulé de la gariguette fait l’unanimité !"
+    //    ),
+    //];
+    
 }
 
 function getArticleFromId($id)

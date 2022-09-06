@@ -173,6 +173,35 @@ body {
     justify-content: center !important;
 }
 
+/*Profil*/
+.account-banner {
+    background-image: url(images/epicerie.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100vw;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 5rem;
+}
+
+.account-banner h1 {
+    color: white !important;
+    text-align: center;
+}
+
+.account-buttons {
+    padding: 2.5rem;
+}
+
+.card-user {
+    padding: 1.5rem;
+}
+
+.card-user i {
+    font-size: 56px;
+}
 
 @media (max-width: 480px)
 {
