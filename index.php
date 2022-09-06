@@ -1,7 +1,9 @@
 <?php
+session_start();
 require '_header.tpl.php';
 require '_footer.tpl.php';
 require 'functions.php';
+
 ?>
 
 <div class="container-xxl">
@@ -16,13 +18,17 @@ require 'functions.php';
             <?php foreach ($home_products as $currentProduct) : ?>
                 <div class="col home-products">
                     <div class="card" style="width: 18rem;">
-                        <img src="<?= $currentProduct->image ?>" class="card-img-top" alt="<?= $currentProduct->name ?>">
+                        <img src="<?= $currentProduct->getImage() ?>" class="card-img-top" alt="<?= $currentProduct->getName() ?>">
                         <div class="card-body">
-                            <h3 class="card-title"><?= $currentProduct->name ?></h3>
-                            <p class="card-text"><?= $currentProduct->price ?>€/kg</p>
+                            <h3 class="card-title"><?= $currentProduct->getName() ?></h3>
+                            <p class="card-text"><?= $currentProduct->getPrice() ?>€/kg</p>
                             <div class="card-btns">
-                                <a href="" class="btn btn-light">Détails produit</a>
-                                <a href="" class="btn btn-dark">Acheter</a>
+                                <a href="produit.php?&id=<?= $currentProduct->getId() ?>" class="btn btn-light">Détails produit</a>
+                                <form action="panier.php" method="post">
+                                    <input type="hidden" name="addProduct" value="<?=$currentProduct->id ?>">
+                                    <input type="submit" name="cart" class="btn btn-dark btn-sm" value="Acheter">
+                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -30,5 +36,4 @@ require 'functions.php';
             <?php endforeach; ?>
         </div>
     </div>
-
 </div>

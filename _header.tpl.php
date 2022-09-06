@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
   <meta charset="UTF-8">
@@ -11,7 +11,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <title>Epicerie en ligne</title>
+  <script>
+    const myModal = document.getElementById('myModal')
+    const myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', () => {
+      myInput.focus()
+    })
+  </script>
 </head>
+
+<?php
+setlocale(LC_TIME, "fr");
+?>
 
 <body>
 
@@ -27,7 +39,7 @@
             <a class="nav-link active" aria-current="page" href="index.php">Accueil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Produits</a>
+            <a class="nav-link" href="panier.php">Panier </a>
           </li>
         </ul>
       </div>
