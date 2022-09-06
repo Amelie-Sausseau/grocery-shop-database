@@ -36,12 +36,19 @@ setlocale(LC_TIME, "fr");
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="index.php">Accueil</a>
+            <a class="nav-link active" aria-current="page" href="index.php" >Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="gammes.php">Gammes</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="panier.php">Panier </a>
           </li>
         </ul>
+      </div>
+      <div class="d-flex btn-user">
+        <a class="btn btn-outline-light" type="submit" href="connexion.php">Connexion</a>
+        <a class="btn btn-outline-light" type="submit" href="inscription.php">Inscription</a>
       </div>
     </div>
   </nav>

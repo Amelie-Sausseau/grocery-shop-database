@@ -11,6 +11,10 @@ body {
     color: white !important;
 }
 
+.btn-user {
+    gap: 5% !important;
+}
+
 .footer a {
     font-size: 14px !important;
     margin-left: auto;
@@ -136,6 +140,39 @@ body {
 }
 
 /*Modal*/
+
+/* Inscription / Connexion */
+.btn-inscription {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem !important;
+}
+
+.form h2,
+.not-registered h3 {
+    text-align: center;
+    margin: 2rem;
+}
+
+.form-body {
+    width: 60vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.form {
+    border: 1px solid black;
+    padding: 2.5rem;
+    margin-top: 2.5rem;
+}
+
+.form-object {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
+
 
 @media (max-width: 480px)
 {
