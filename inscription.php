@@ -4,43 +4,44 @@ require '_footer.tpl.php';
 require 'functions.php';
 session_start();
 
+if (isset($_POST['newUser'])) {
+    newUser();
+}
 ?>
 
 <div class="container">
 
     <div class="form">
         <h2>Créer mon compte</h2>
-        <form class="form-body" action="">
+        <form action="inscription.php" method="post" class="form-body">
             <div class="form-object" class="lastname">
-                <label for="lastname">Nom :</label>
-                <input type="text" placeholder="Nom">
+                <label>Nom :</label>
+                <input name="lastname" type="text" placeholder="Nom">
             </div>
             <div class="form-object" class="firstname">
-                <label for="firstname">Prénom :</label>
-                <input type="text" placeholder="Prénom">
+                <label>Prénom :</label>
+                <input name="firstname" type="text" placeholder="Prénom">
             </div>
             <div class="form-object" class="email">
-                <label for="email">Adresse email :</label>
-                <input type="email" placeholder="adresse@email.fr">
+                <label>Adresse email :</label>
+                <input name="email" type="email" placeholder="adresse@email.fr">
             </div>
             <div class="form-object" class="password">
-                <label for="password">Mot de passe:</label>
-                <input type="password" placeholder="Mot de passe">
+                <label>Mot de passe:</label>
+                <input name="password" type="password" placeholder="Mot de passe">
             </div>
             <div class="form-object" class="adress">
-                <label for="adress">Adresse :</label>
-                <input type="text" placeholder="1 Rue de L'épicerie">
+                <label>Adresse :</label>
+                <input name="address" type="text" placeholder="1 Rue de L'épicerie">
             </div>
             <div class="form-object" class="zip">
-                <label for="zip">Code Postal :</label>
-                <input type="text" placeholder="01000">
+                <label>Code Postal :</label>
+                <input name="zip" type="text" placeholder="01000">
             </div>
             <div class="form-object" class="city">
-                <label for="city">Ville :</label>
-                <input type="text" placeholder="Ville">
+                <label>Ville :</label>
+                <input name="city" type="text" placeholder="Ville">
             </div>
-        </form>
-        <form action="connexion.php" method="post" class="btn-inscription">
             <input type="hidden" name="newUser">
             <input type="submit" name="inscription" class="btn btn-dark btn-sm" value="S'inscrire">
         </form>

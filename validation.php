@@ -22,17 +22,17 @@ if (isset($_POST['validationId'])) {
         <div class="card card-product mb-3" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="<?= $products->image ?>" class="img-fluid rounded-start" alt="<?= $products->name ?>" style="max-width: 250px;">
+                    <img src="<?= $products['image'] ?>" class="img-fluid rounded-start" alt="<?= $products['nom']  ?>" style="max-width: 250px;">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title"><?= $products->name ?></h5>
-                        <p class="card-text">Quantité : <?= $products->quantity ?></p>
+                        <h5 class="card-title"><?= $products['nom']  ?></h5>
+                        <p class="card-text">Quantité : <?= $products['quantity']  ?></p>
                         <form action="validation.php" method="post" class="quantity">
 
                         </form>
 
-                        <p class="card-text">Total : <?= totalPerProduct($products->price, $products->quantity) ?> €</p>
+                        <p class="card-text">Total : <?= totalPerProduct($products['prix'] , $products['quantity'] ) ?> €</p>
 
                     </div>
                 </div>

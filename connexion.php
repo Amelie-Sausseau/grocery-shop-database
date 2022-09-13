@@ -3,28 +3,25 @@ require '_header.tpl.php';
 require '_footer.tpl.php';
 require 'functions.php';
 session_start();
-if(!isset($_SESSION["username"])) {
-    header("Location: profil.php");
-    exit();
-}
 
+if (isset($_POST['SignUp'])) {
+    connexion();
+}
 ?>
 
 <div class="container">
 
     <div class="form">
         <h2>Connexion</h2>
-        <form class="form-body" action="">
+        <form action="profil.php" method="post" class="form-body">
             <div class="form-object" class="email">
                 <label for="email">Adresse email :</label>
-                <input type="email" placeholder="adresse@email.fr">
+                <input type="email" name="connect_email" placeholder="adresse@email.fr">
             </div>
             <div class="form-object" class="password">
                 <label for="password">Mot de passe:</label>
-                <input type="password" placeholder="Mot de passe">
+                <input type="password" name="connect_pwd" placeholder="Mot de passe">
             </div>
-        </form>
-        <form action="profil.php" method="post" class="btn-inscription">
             <input type="hidden" name="SignUp">
             <input type="submit" name="connexion" class="btn btn-dark btn-sm" value="Se connecter">
         </form>
