@@ -1,104 +1,18 @@
 <?php
 
-    $servername = 'localhost';
+function connectDB()
+{
     $username = 'root';
     $password = '';
-    
-    //On établit la connexion
-    $conn = new mysqli($servername, $username, $password);
-    
-    //On vérifie la connexion
-    if($conn->connect_error){
-        die('Erreur : ' .$conn->connect_error);
-    };
 
-class Article
-{
-    public $id;
-    public $name;
-    public $image;
-    public $price;
-    public $category;
-    public $description;
-    public $quantity = 1;
+    $cnx = 'mysql:dbname=boutique_en_ligne;host=127.0.0.1;charset=UTF8';
 
+    $pdo = new PDO($cnx, $username, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING
+    ]);
 
-    public function __construct($id = '', $name = '', $image = '', $price = '', $category = '', $description = '')
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->image = $image;
-        $this->price = $price;
-        $this->category = $category;
-        $this->description = $description;
-    }
-
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function getQuantity()
-    {
-        return $this->quantity;
-    }
-}
-
-$home_products = [
-    new Article(
-        "0",
-        "Pommes",
-        "images/apples.jpg",
-        2.30,
-        "fruit",
-        "La pomme gala peut se déguster en tarte, au four, à cuisiner ou simplement à croquer !"
-    ),
-    new Article(
-        "1",
-        "Ananas",
-        "images/pineapples.jpg",
-        3,
-        "fruit",
-        "Pour rehausser le goût de vos diverses préparations, choisissez cet ananas Victoria. À la fois savoureux et rafraîchissant, il saura émerveiller vos papilles. Cet ananas victoria est ce qu'il vous faut pour apporter une touche d'exotisme à vos plats. "
-
-    ),
-
-    new Article(
-        "2",
-        "Fraises",
-        "images/strawberry.jpg",
-        2.50,
-        "fruit",
-        "Fraise juteuse, fondante et très parfumée, le parfait équilibre sucré et acidulé de la gariguette fait l’unanimité !"
-    ),
-];
-
+    return $pdo;
+};
 
 //panier
 
@@ -108,53 +22,107 @@ function addToCart($article)
         $_SESSION['cart'] = array();
     }
     for ($i = 0; $i < count($_SESSION['cart']); $i++) {
-        if ($_SESSION['cart'][$i]->id == $article->id) {
+        if ($_SESSION['cart'][$i]['id'] == $article['id']) {
             echo "<script>alert(\"Le produit a déjà été ajouté au panier\")</script>";
             return;
         }
     }
-    $article->quantity = 1;
+    $article['quantite'] = 1;
     array_push($_SESSION['cart'], $article);
-}
+
 
 function homeProducts()
 {
-    //return [
-    //    new Article(
-    //        "0",
-    //        "Pommes",
-    //        "images/apples.jpg",
-    //        2.30,
-    //        "fruit",
-    //        "La pomme gala peut se déguster en tarte, au four, à cuisiner ou simplement à croquer !"
-    //    ),
-    //    new Article(
-    //        "1",
-    //        "Ananas",
-    //        "images/pineapples.jpg",
-    //        3,
-    //        "fruit",
-    //        "Pour rehausser le goût de vos diverses préparations, choisissez cet ananas Victoria. À la fois savoureux et rafraîchissant, il saura émerveiller vos papilles. Cet ananas victoria est ce qu'il vous faut pour apporter une touche d'exotisme à vos plats. "
+    $connect = connectDB();
+    $query = $connect->prepare("SELECT * FROM articles ORDER BY id DESC LIMIT 3");
+    $query->execute();
+    $allArticles = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    //    ),
-    //
-    //    new Article(
-    //        "2",
-    //        "Fraises",
-    //        "images/strawberry.jpg",
-    //        2.50,
-    //        "fruit",
-    //        "Fraise juteuse, fondante et très parfumée, le parfait équilibre sucré et acidulé de la gariguette fait l’unanimité !"
-    //    ),
-    //];
-    
+    foreach ($allArticles as $currentProduct) {
+        $range = getRangeFromId($currentProduct['id_gamme']);
+
+        echo "
+        <div class=\"col home-products\">
+            <div class=\"card\" style=\"width: 18rem;\">
+                <img src=\" " . $currentProduct['image'] . " \" class=\"card-img-top\">
+                <span class=\"card-span\" style=\"text-transform: capitalize; color: lightgrey; font-size: 14px\">" . $range['nom'] . "</span>
+                <div class=\"card-body\">
+                    <h3 class=\"card-title\">" . $currentProduct['nom'] . " </h3>
+                    <p class=\"card-text\">" . $currentProduct['prix'] . "€/kg</p>
+                    <p class=\"card-text\">" . $currentProduct['description'] . "</p>
+                    <div class=\"card-btns\">
+                        <a href=\"produit.php?&id=" . $currentProduct['id'] . " \"class=\"btn btn-light\">Détails produit</a>
+                        <form action=\"panier.php\" method=\"post\">
+                            <input type=\"hidden\" name=\" " . addToCart($currentProduct) . " \" value=\" " . $currentProduct['id'] . " \">
+                            <input type=\"submit\" name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>";
+    }
 }
 
 function getArticleFromId($id)
 {
-    foreach (homeProducts() as $product) {
-        if ($product->id == $id) {
-            return $product;
+    $connect = connectDB();
+    $query = $connect->prepare("SELECT * FROM articles WHERE id = ?");
+    $query->execute(array($id));
+    return $query->fetch();
+}
+
+function getArticleFromRange($id)
+{
+    $connect = connectDB();
+    $query = $connect->prepare("SELECT * FROM articles WHERE id_gamme = ?");
+    $query->execute(array($id));
+    return $query->fetchAll();
+}
+
+function getRangeFromId($id)
+{
+    $connect = connectDB();
+    $query = $connect->prepare("SELECT * FROM gammes WHERE id = ?");
+    $query->execute(array($id));
+    return $query->fetch();
+}
+
+function articlesByRange()
+{
+    $connect = connectDB();
+    $query = $connect->prepare("SELECT * FROM gammes");
+    $query->execute();
+    $allRanges = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($allRanges as $currentRange) {
+        $productByRange = getArticleFromRange($currentRange['id']);
+        echo
+        "<nav class=\"navbar bg-light  range-name\">
+        <div class=\"container-fluid\">
+          <h3 class=\"navbar-brand mb-0 h1\" style=\"text-transform: capitalize; color: black !important\">" . $currentRange['nom'] . "s</h3>
+        </div>
+      </nav>";
+        foreach ($productByRange as $product) {
+            echo
+        "<div class=\"col range-products\">
+            <div class=\"card\" style=\"width: 18rem;\">
+                <img src=\" " . $product['image'] . " \" class=\"card-img-top\">
+                <div class=\"card-body\">
+                    <h3 class=\"card-title\">" . $product['nom'] . " </h3>
+                    <p class=\"card-text\">" . $product['prix'] . "€/kg</p>
+                    <p class=\"card-text\">" . $product['description'] . "</p>
+                    <div class=\"card-btns\">
+                        <a href=\"produit.php?&id=" . $product['id'] . " \"class=\"btn btn-light\">Détails produit</a>
+                        <form action=\"panier.php\" method=\"post\">
+                            <input type=\"hidden\" name=\" " . addToCart($product) . " \" value=\" " . $product['id'] . " \">
+                            <input type=\"submit\" name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>";
         }
     }
 }
@@ -163,7 +131,7 @@ function removeArticles($deleteId)
 {
     if (!empty($_SESSION['cart'])) {
         for ($i = 0; $i < count($_SESSION['cart']); $i++) {
-            if ($_SESSION['cart'][$i]->id == $deleteId->id) {
+            if ($_SESSION['cart'][$i] == $deleteId) {
                 array_splice($_SESSION['cart'], $i, 1);
             }
         }
@@ -253,4 +221,5 @@ function receiveDate()
     $receiveDate = date('j F Y', strtotime("+5 days"));
     setlocale(LC_TIME, "fr_FR");
     echo strftime("%A %d %B %G", strtotime($receiveDate));
+}
 }

@@ -6,12 +6,12 @@ session_start();
 ?>
 
 <?php $id = $_GET['id'];
-$product = $home_products[$id]; ?>
+$product = getArticleFromId($id); ?>
 
 <div class="detail-product">
-    <h5><?= $product->name ?></h5>
-    <img src="<?= $product->image ?>" alt="<?= $product->name ?>">
-    <p><?= $product->description ?></p>
-    <p><?= $product->price ?>€/kg</p>
+    <h5><?= $product['nom'] ?></h5>
+    <img src="<?= $product['image'] ?>" alt="<?= $product['nom'] ?>">
+    <p><?= $product['description_detaillee'] ?></p>
+    <p><?= $product['prix'] ?>€/kg</p>
     <a href="panier.php"><button type='submit' class="btn btn-dark" name='cart' value='<?=addToCart($product)?>'>Acheter</button> </a>
 </div>
