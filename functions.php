@@ -29,6 +29,7 @@ function addToCart($article)
     }
     $article['quantite'] = 1;
     array_push($_SESSION['cart'], $article);
+}
 
 
 function homeProducts()
@@ -53,10 +54,9 @@ function homeProducts()
                     <div class=\"card-btns\">
                         <a href=\"produit.php?&id=" . $currentProduct['id'] . " \"class=\"btn btn-light\">Détails produit</a>
                         <form action=\"panier.php\" method=\"post\">
-                            <input type=\"hidden\" name=\" " . addToCart($currentProduct) . " \" value=\" " . $currentProduct['id'] . " \">
-                            <input type=\"submit\" name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
-                        </form>
-
+                        <input type=\"hidden\" name=\"addProduct\" value=\"" . $currentProduct['id'] . " \">
+                        <input type=\"submit\" name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
+                    </form>
                     </div>
                 </div>
             </div>
@@ -221,5 +221,4 @@ function receiveDate()
     $receiveDate = date('j F Y', strtotime("+5 days"));
     setlocale(LC_TIME, "fr_FR");
     echo strftime("%A %d %B %G", strtotime($receiveDate));
-}
 }
