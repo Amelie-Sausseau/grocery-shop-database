@@ -13,7 +13,14 @@ body {
 
 .btn-user {
     gap: 5% !important;
+    min-width: 30vw !important;
 }
+
+.d-flex {
+    justify-content: flex-end !important;
+    align-items: center !important;
+}
+
 
 .footer a {
     font-size: 14px !important;

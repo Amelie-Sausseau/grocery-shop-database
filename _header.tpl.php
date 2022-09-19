@@ -24,6 +24,13 @@
 
 <?php
 setlocale(LC_TIME, "fr");
+
+if (isset($_POST['deconnexion'])) 
+{
+    session_destroy();
+    unset($_session['id']);
+    header("Location: index.php");
+} 
 ?>
 
 <body>
@@ -48,8 +55,14 @@ setlocale(LC_TIME, "fr");
         </ul>
       </div>
       <div class="d-flex btn-user">
-        <a class="btn btn-outline-light" type="submit" href="connexion.php">Connexion</a>
-        <a class="btn btn-outline-light" type="submit" href="inscription.php">Inscription</a>
+        <?php if(!isset($_SESSION['id'])) {echo "<a class=\"btn btn-outline-light\" type=\"submit\" href=\"connexion.php\">Connexion</a>";} ?>
+        <?php if(isset($_SESSION['id'])) {echo "<a class=\"btn btn-outline-light\" type=\"submit\" href=\"profil.php\">Mon compte</a>";} ?>
+        <?php if(isset($_SESSION['id'])) {echo 
+        "<form action=\"profil.php\" method=\"post\">
+        <input type=\"hidden\" name=\"deconnexion\">
+        <input class=\"btn btn-outline-light\"  type=\"submit\" value=\"Déconnexion\">
+        </form>";} ?>
+        <?php if(!isset($_SESSION['id'])) {echo "<a class=\"btn btn-outline-light\" type=\"submit\" href=\"inscription.php\">Inscription</a>";} ?>
       </div>
     </div>
   </nav>

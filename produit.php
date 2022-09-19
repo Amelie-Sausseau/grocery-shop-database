@@ -1,12 +1,15 @@
 <?php
 require 'functions.php';
-require '_header.tpl.php';
 require '_footer.tpl.php';
 session_start();
 ?>
 
 <?php $id = $_GET['id'];
 $product = getArticleFromId($id); ?>
+
+<header>
+    <?php require '_header.tpl.php'; ?>
+</header>
 
 <div class="detail-product">
     <h5><?= $product['nom'] ?></h5>
