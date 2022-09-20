@@ -214,6 +214,13 @@ function totalWithTaxes()
     return number_format($totalWithTaxes, 2, ',', ' ');
 }
 
+function actualDate()
+{
+    $actualDate = date('j F Y');
+    setlocale(LC_TIME, "fr_FR");
+    echo strftime("%A %d %B %G", strtotime($actualDate));
+}
+
 function sendDate()
 {
     $sendDate = date('j F Y', strtotime("+2 days"));
@@ -229,6 +236,12 @@ function receiveDate()
 }
 
 // Gestion utilisateurs
+function checkPassword($password)
+{
+    // minimum 8 caractères et maximum 15, minimum 1 lettre, 1 chiffre et 1 caractère spécial
+    $regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@$!%*?/&])(?=\S+$).{8,15}$^";
+    return preg_match($regex, $password);
+}
 
 function newUser()
 {
@@ -251,32 +264,35 @@ function newUser()
 
                 if ((emailExists($email)) == false) {
 
-                    $mdp_secu = password_hash($mdp, PASSWORD_BCRYPT);
+                    if (checkPassword($mdp)) {
 
-                    $query = $connect->prepare("INSERT INTO clients (nom,prenom,email,mot_de_passe) VALUES(:nom, :prenom, :email, :mot_de_passe)");
-                    $query->execute(array(
-                        'nom' => $nom,
-                        'prenom' => $prenom,
-                        'email' => $email,
-                        'mot_de_passe' => $mdp_secu,
-                    ));
+                        $mdp_secu = password_hash($mdp, PASSWORD_BCRYPT);
 
-                    $id = $connect->lastInsertId();
-
-                    if (!empty($id) && !empty($adresse) || !empty($cp) || !empty($ville)) {
-                        $query = $connect->prepare("INSERT INTO adresses (id_client,adresse,code_postal,ville) VALUES(:id_client, :adresse, :code_postal, :ville)");
+                        $query = $connect->prepare("INSERT INTO clients (nom,prenom,email,mot_de_passe) VALUES(:nom, :prenom, :email, :mot_de_passe)");
                         $query->execute(array(
-                            'id_client' => $id,
-                            'adresse' => $adresse,
-                            'code_postal' => $cp,
-                            'ville' => $ville,
+                            'nom' => $nom,
+                            'prenom' => $prenom,
+                            'email' => $email,
+                            'mot_de_passe' => $mdp_secu,
                         ));
-                    }
 
-                    echo "<script>alert(\"Inscription réussie\")</script>";
+                        $id = $connect->lastInsertId();
 
-                    header("Location: profil.php");
-                    exit();
+                        if (!empty($id) && !empty($adresse) || !empty($cp) || !empty($ville)) {
+                            $query = $connect->prepare("INSERT INTO adresses (id_client,adresse,code_postal,ville) VALUES(:id_client, :adresse, :code_postal, :ville)");
+                            $query->execute(array(
+                                'id_client' => $id,
+                                'adresse' => $adresse,
+                                'code_postal' => $cp,
+                                'ville' => $ville,
+                            ));
+                        }
+
+                        echo "<script>alert(\"Inscription réussie\")</script>";
+
+                        header("Location: profil.php");
+                        exit();
+                    } else echo "<script>alert(\"Mot de passe incorrect\")</script>";
                 } else echo "<script>alert(\"Cette adresse email est déjà utilisée\")</script>";
             } else echo "<script>alert(\"Trop de caractères\")</script>";
         } else echo "<script>alert(\"Il manque des caractères\")</script>";
@@ -317,7 +333,7 @@ function connexion()
     $connect = connectDB();
 
     $email = strip_tags($_POST['connect_email']);
-    $password = $_POST['connect_pwd']; 
+    $password = $_POST['connect_pwd'];
 
     if (isset($email) && isset($password)) {
         $query = $connect->prepare("SELECT * FROM clients WHERE email = ?");
@@ -327,7 +343,7 @@ function connexion()
         if ($validatedEmail) {
             $validatedPassword = password_verify($password, $validatedEmail['mot_de_passe']);
 
-            if($validatedPassword) {
+            if ($validatedPassword) {
                 echo "<script>alert(\"Connexion réussie\")</script>";
 
                 $_SESSION['email'] = $email;
@@ -338,18 +354,13 @@ function connexion()
 
                 header("Location: profil.php");
                 exit();
-            }
-
-            else echo "<script>alert(\"Adresse email ou mot de passe incorrect\")</script>";
-        }
-
-        else echo "<script>alert(\"Adresse email ou mot de passe incorrect\")</script>";
-    } 
-
-    else echo "<script>alert(\"Veuillez remplir tous les champs\")</script>";
+            } else echo "<script>alert(\"Adresse email ou mot de passe incorrect\")</script>";
+        } else echo "<script>alert(\"Adresse email ou mot de passe incorrect\")</script>";
+    } else echo "<script>alert(\"Veuillez remplir tous les champs\")</script>";
 }
 
-function getAddress() {
+function getAddress()
+{
     $connect = connectDB();
 
     $query = $connect->prepare("SELECT * FROM adresses WHERE id_client = ?");
@@ -357,37 +368,45 @@ function getAddress() {
     return $query->fetch();
 }
 
-function changeAddress($id) {
+function changeAddress($id)
+{
     $connect = connectDB();
 
     $query = $connect->prepare("UPDATE adresses SET adresse = :adresse, code_postal = :code_postal, ville = :ville WHERE id = :id");
-    $query->execute(array(   
-    'adresse' => $_POST['newAddress'],
-    'code_postal' => $_POST['newZip'],
-    'ville' => $_POST['newCity'],
-    'id' => $id));
+    $query->execute(array(
+        'adresse' => $_POST['newAddress'],
+        'code_postal' => $_POST['newZip'],
+        'ville' => $_POST['newCity'],
+        'id' => $id
+    ));
+
+    $_SESSION['adresse'] = $id;
 
     echo "<script>alert(\"Adresse modifiée\")</script>";
-
-    header("Location: profil.php");
 }
 
-function changeProfile() {
+function changeProfile()
+{
     $connect = connectDB();
 
     $query = $connect->prepare("UPDATE clients SET nom = :nom, prenom = :prenom, email = :email WHERE id = :id");
-    $query->execute(array(   
-    'nom' => $_POST['newLastname'],
-    'prenom' => $_POST['newFirstname'],
-    'email' => $_POST['newEmail'],
-    'id' => $_SESSION['id']));
+    $query->execute(array(
+        'nom' => $_POST['newLastname'],
+        'prenom' => $_POST['newFirstname'],
+        'email' => $_POST['newEmail'],
+        'id' => $_SESSION['id']
+    ));
+
+    $_SESSION['email'] = $_POST['newEmail'];
+    $_SESSION['id'] = $_SESSION['id'];
+    $_SESSION['prenom'] = $_POST['newFirstname'];
+    $_SESSION['nom'] = $_POST['newLastname'];
 
     echo "<script>alert(\"Informations modifiées\")</script>";
-
-    header("Location: profil.php");
 }
 
-function changePassword() {
+function changePassword()
+{
     $connect = connectDB();
 
     $id = $_SESSION['id'];
@@ -401,28 +420,111 @@ function changePassword() {
     $verifyPassword = password_verify($password, $currentUser['mot_de_passe']);
 
     if ($verifyPassword) {
-    $mdp_secu = password_hash($mdp, PASSWORD_BCRYPT);
+        if (checkPassword($mdp)) {
+            $mdp_secu = password_hash($mdp, PASSWORD_BCRYPT);
 
-    $query = $connect->prepare("UPDATE clients SET mot_de_passe = :mot_de_passe WHERE id = :id");
-    $query->execute(array(   
-    'mot_de_passe' => $mdp_secu,
-    'id' => $_SESSION['id']));
+            $query = $connect->prepare("UPDATE clients SET mot_de_passe = :mot_de_passe WHERE id = :id");
+            $query->execute(array(
+                'mot_de_passe' => $mdp_secu,
+                'id' => $_SESSION['id']
+            ));
 
-    echo "<script>alert(\"Mot de passe modifié\")</script>";
+            echo "<script>alert(\"Mot de passe modifié\")</script>";
 
-    header("Location: profil.php");
-    exit();
-    }
-
-    else echo "<script>alert(\"Ancien mot de passe incorrect\")</script>";
+            header("Location: profil.php");
+            exit();
+        } else echo "<script>alert(\"ANouveau mot de passe invalide \")</script>";
+    } else echo "<script>alert(\"Ancien mot de passe incorrect\")</script>";
 }
 
-function deconnexion() 
+function deconnexion()
 {
-    if (isset($_POST['deconnexion'])) 
-    {
+    if (isset($_POST['deconnexion'])) {
         session_destroy();
         unset($_session['id']);
         header("Location: index.php");
-    } 
+    }
 }
+
+// Gestion des commandes
+
+function orderNumber()
+{
+    $randomNumber = random_int(0000000, 9999999);
+    return $randomNumber;
+}
+
+function createOrder($numero, $produits)
+{
+    $connect = connectDB();
+
+    date_default_timezone_set('Europe/Paris');
+    $date = date('m/d/Y h:i:s a', time());
+
+    $id = $_SESSION['id'];
+    $prix = totalWithTaxes();
+
+    if (!empty($date) && !empty($prix) && !empty($numero) && !empty($id)) {
+    $query = $connect->prepare("INSERT INTO commandes (id_client,numero,date_commande,prix) VALUES(:id_client, :numero, :date_commande, :prix)");
+    $query->execute(array(
+        'id_client' => $id,
+        'prix' => $prix,
+        'numero' => $numero,
+        'date_commande' => $date,
+    ));
+
+        $id_order = $connect->lastInsertId();
+        $query = $connect->prepare("INSERT INTO commande_article (id_commande,id_article,quantite) VALUES(:id_commande, :id_article, :quantite)");
+
+        foreach ($produits as $article)
+        {
+        $query->execute(array(
+            'id_commande' => $id_order,
+            'id_article' => $article['id'],
+            'quantite' => $article['quantity'],
+        ));
+        }  
+
+        $stock = $article['stock'] - $article['quantity'];
+        
+        $query = $connect->prepare("UPDATE articles SET stock = :stock WHERE id = :id");
+        $query->execute(array(
+            'id' => $article['id'],
+            'stock' => $stock,
+        ));
+
+    header("Location: profil.php");
+
+    }   
+}
+
+function listOrders()
+{
+    $connect = connectDB();
+
+    $query = $connect->prepare("SELECT * FROM commandes WHERE id_client = ? ORDER BY id DESC");
+    $query->execute(array($_SESSION['id']));
+    $orders = $query->fetchAll();
+
+    foreach ($orders as $clientOrder) {
+       echo "<tr class=\"list-group-item\"><td>". $clientOrder['numero']. "</td><td>" . strftime("%d/%m/%y à %X", strtotime($clientOrder['date_commande'])) . "</td><td>" . $clientOrder['prix'] . "€ </td><td><a href=\"detailcommandes.php?&id=" . $clientOrder['id'] . " \"class=\"btn btn-light\">Voir</a></td></tr>";
+    }
+}	
+
+function getOrderFromId($id)
+{
+    $connect = connectDB();
+    $query = $connect->prepare("SELECT * FROM commandes WHERE id = ?");
+    $query->execute(array($id));
+    return $query->fetch();
+}
+
+function getInfosFromOrder($id)
+{
+    $connect = connectDB();
+    $query = $connect->prepare("SELECT * FROM commande_article WHERE id_commande = ?");
+    $query->execute(array($id));
+    $articleList = $query->fetchAll();
+    return $articleList;
+}
+

@@ -21,7 +21,6 @@ body {
     align-items: center !important;
 }
 
-
 .footer a {
     font-size: 14px !important;
     margin-left: auto;
@@ -137,6 +136,17 @@ body {
 }
 
 /*Validation*/
+.form-update {
+    max-width: 50vw !important;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem !important;
+}
+
+.form-update .form-body {
+    max-width: 40vw !important;
+}
+
 .resume-validate {
     display: flex;
     flex-direction: column;
@@ -221,4 +231,25 @@ body {
     .add-text {
         margin-left: 0;
     }
+}
+
+/*Commandes*/
+.list-group-item {
+    text-align: center !important;
+}
+
+.table {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.table td,
+.table th {
+    min-width: 20vw !important;
+}
+
+.table-details td,
+.table-details th {
+    min-width: 15vw !important;
 }

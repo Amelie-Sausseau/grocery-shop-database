@@ -60,7 +60,7 @@ if (isset($_POST['deconnexion']))
         <?php if(isset($_SESSION['id'])) {echo 
         "<form action=\"profil.php\" method=\"post\">
         <input type=\"hidden\" name=\"deconnexion\">
-        <input class=\"btn btn-outline-light\"  type=\"submit\" value=\"Déconnexion\">
+        <input class=\"btn btn-outline-light\"  style=\"align-items : center !important;\" type=\"submit\" value=\"Déconnexion\">
         </form>";} ?>
         <?php if(!isset($_SESSION['id'])) {echo "<a class=\"btn btn-outline-light\" type=\"submit\" href=\"inscription.php\">Inscription</a>";} ?>
       </div>

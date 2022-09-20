@@ -49,7 +49,7 @@ if (isset($_POST['clearedId'])) {
                         <p class="card-text">Quantité : <?= $products['quantity']  ?></p>
                         <form action="panier.php" method="post" class="quantity">
                             <p>Modifier la quantité :</p>
-                            <input type="number" class="form-control" name="quantity" value="<?= $products['quantity']  ?>" min="1">
+                            <input type="number" class="form-control" name="quantity" value="<?= $products['quantity']  ?>" min="1" max="<?= $products['stock']?>">
                             <p class="card-text"><small class="text-muted"><?= $products['prix']  ?>€/kg</small></p>
                             <input type="hidden" name="articleId" value="<?= $products['id']  ?>">
                             <input type="submit" name="submit" class="btn btn-dark btn-sm" value='Valider'>

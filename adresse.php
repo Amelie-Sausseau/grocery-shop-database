@@ -20,7 +20,7 @@ if (isset($_POST['changeAddress'])) {
 
     <div class="form">
         <h2>Modifier mon adresse</h2>
-        <form action="profil.php" method="post" class="form-body">
+        <form action="adresse.php" method="post" class="form-body">
             <div class="form-object" class="adress">
                 <label>Adresse :</label>
                 <input name="newAddress" type="text" placeholder="1 Rue de L'épicerie" value="<?= $adresse['adresse'] ?>">
@@ -36,7 +36,6 @@ if (isset($_POST['changeAddress'])) {
             <input type="hidden" name="newUser">
             <input type="submit" name="changeAddress" class="btn btn-dark btn-sm" value="Valider">
         </form>
-
     </div>
     
 </div>

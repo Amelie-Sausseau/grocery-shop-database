@@ -7,3 +7,20 @@ session_start();
 <header>
     <?php require '_header.tpl.php'; ?>
 </header>
+
+<div class="container cart-page">
+
+    <h3>Mes commandes</h3>
+
+    <div class="table">
+        <table>
+            <tr class="list-group-item">
+                <th>Numéro de commande</th>
+                <th>Date de commande</th>
+                <th>Prix</th>
+            </tr>
+            <?= listOrders() ?>
+        </table>
+
+    </div>
+</div>
