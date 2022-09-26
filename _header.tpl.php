@@ -44,13 +44,13 @@ if (isset($_POST['deconnexion']))
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="index.php" >Accueil</a>
+            <a class="nav-link <?php if(basename($_SERVER['SCRIPT_NAME']) == 'index.php') {echo "active";} ?>" aria-current="page" href="index.php" >Accueil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="gammes.php">Gammes</a>
+            <a class="nav-link <?php if(basename($_SERVER['SCRIPT_NAME']) == "gammes.php") {echo "active";} ?>" href="gammes.php">Gammes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="panier.php">Panier </a>
+            <a class="nav-link <?php if(basename($_SERVER['SCRIPT_NAME']) == "panier.php") {echo "active";} ?>" href="panier.php">Panier (<?=(count($_SESSION['cart']))?>)</a>
           </li>
         </ul>
       </div>
@@ -60,7 +60,7 @@ if (isset($_POST['deconnexion']))
         <?php if(isset($_SESSION['id'])) {echo 
         "<form action=\"profil.php\" method=\"post\">
         <input type=\"hidden\" name=\"deconnexion\">
-        <input class=\"btn btn-outline-light\"  style=\"align-items : center !important;\" type=\"submit\" value=\"Déconnexion\">
+        <input class=\"btn btn-outline-light\" type=\"submit\" value=\"Déconnexion\">
         </form>";} ?>
         <?php if(!isset($_SESSION['id'])) {echo "<a class=\"btn btn-outline-light\" type=\"submit\" href=\"inscription.php\">Inscription</a>";} ?>
       </div>

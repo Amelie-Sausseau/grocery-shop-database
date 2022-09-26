@@ -10,7 +10,7 @@ $id = $_GET['id'];
 //On retrouve la commande grâce à cet id (commande)
 $order = getOrderFromId($id);
 //On retrouve le détail de cette commande (commande_article)
-$infos = getInfosFromOrder($id);
+$articles = getArticlesFromOrder($id);
 
 ?>
 
@@ -30,12 +30,13 @@ $infos = getInfosFromOrder($id);
             <th>Quantité</th>
             <th>Prix</th>
         </tr>
-        <?php foreach ($infos as $info) {
+        <?php foreach ($articles as $article) {
             //On retrouve chaque produit grâce à leur id (articles)
-            $article = getArticleFromId($info['id_article']);
-            $price = $info['quantite'] * $article['prix'];
-            echo "<tr class=\"list-group-item\"><td><img class=\"table-img\" width=\"100px\" src=\"" . $article['image'] . "\"></td><td>" . $article['nom'] . "</td><td>" . $article['description'] . "</td><td>" . $info['quantite'] . "</td><td>" . $price . "€</td></tr>";}
+            $price = $article['quantite'] * $article['prix'];
+            echo "<tr class=\"list-group-item\"><td><img class=\"table-img\" width=\"100px\" src=\"" . $article['image'] . "\"></td><td>" . $article['nom'] . "</td><td>" . $article['description'] . "</td><td>" . $article['quantite'] . "</td><td>" . $price . "€</td></tr>";
+        }
         ?>
     </table>
     </div>
 </div>
+

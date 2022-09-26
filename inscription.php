@@ -32,6 +32,7 @@ if (isset($_POST['newUser'])) {
             <div class="form-object" class="password">
                 <label>Mot de passe:</label>
                 <input name="password" type="password" placeholder="Mot de passe">
+                <div id="passwordHelp" class="form-text">Entre 8 et 15 caractères, minimum 1 lettre, 1 chiffre et 1 caractère spécial</div>
             </div>
             <div class="form-object" class="adress">
                 <label>Adresse :</label>

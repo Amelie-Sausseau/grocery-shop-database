@@ -70,13 +70,13 @@ if (isset($_POST['clearedId'])) {
     <div class="resume">
         <h5>Total : <?= countProducts() ?> articles | <?= totalPrice() ?> €</h5>
         <div class="resume-buttons">
-        <?php if(isset($_SESSION['id'])) {echo "<form action=\"validation.php\" method=\"post\">
-                <input type=\"submit\" name=\"validateCart\" class=\"btn btn-success btn-sm\" value='Valider le panier'>
-            </form>";}?>
             <form action="panier.php" method="post">
                 <input type="hidden" name="clearedId">
                 <input type="submit" name="clear" class="btn btn-dark btn-sm" value='Vider le panier'>
             </form>
+            <?php if(isset($_SESSION['id'])) {echo "<form action=\"validation.php\" method=\"post\">
+                <input type=\"submit\" name=\"validateCart\" class=\"btn btn-success btn-sm\" value='Valider le panier'>
+            </form>";}?>
         </div>
     </div>
 </div>

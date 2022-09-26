@@ -30,16 +30,17 @@ function homeProducts()
         <div class=\"col home-products\">
             <div class=\"card\" style=\"width: 18rem;\">
                 <img src=\" " . $currentProduct['image'] . " \" class=\"card-img-top\">
-                <span class=\"card-span\" style=\"text-transform: capitalize; color: lightgrey; font-size: 14px\">" . $range['nom'] . "</span>
+                <span class=\"badge text-bg-light\">" . $range['nom'] . "</span>
                 <div class=\"card-body\">
                     <h3 class=\"card-title\">" . $currentProduct['nom'] . " </h3>
                     <p class=\"card-text\">" . $currentProduct['prix'] . "€/kg</p>
                     <p class=\"card-text\">" . $currentProduct['description'] . "</p>
+                    " . showStocks($currentProduct['id']) . "
                     <div class=\"card-btns\">
-                        <a href=\"produit.php?&id=" . $currentProduct['id'] . " \"class=\"btn btn-light\">Détails produit</a>
+                        <a href=\"produit.php?&id=" . $currentProduct['id'] . " \"class=\"btn btn-outline-secondary\">Détails produit</a>
                         <form action=\"panier.php\" method=\"post\">
                         <input type=\"hidden\" name=\"addProduct\" value=\"" . $currentProduct['id'] . " \">
-                        <input type=\"submit\" name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
+                        <input ".possiblePurchase($currentProduct['stock'])." name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
                     </form>
                     </div>
                 </div>
@@ -98,17 +99,44 @@ function articlesByRange()
                     <h3 class=\"card-title\">" . $product['nom'] . " </h3>
                     <p class=\"card-text\">" . $product['prix'] . "€/kg</p>
                     <p class=\"card-text\">" . $product['description'] . "</p>
+                    " . showStocks($product['id']) . "
                     <div class=\"card-btns\">
-                        <a href=\"produit.php?&id=" . $product['id'] . " \"class=\"btn btn-light\">Détails produit</a>
+                        <a href=\"produit.php?&id=" . $product['id'] . " \"class=\"btn btn-outline-secondary\">Détails produit</a>
                         <form action=\"panier.php\" method=\"post\">
                         <input type=\"hidden\" name=\"addProduct\" value=\"" . $product['id'] . " \">
-                        <input type=\"submit\" name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
+                        <input ".possiblePurchase($product['stock'])." name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
                         </form>
                     </div>
                 </div>
             </div>
         </div>";
         }
+    }
+}
+
+function showStocks($id)
+{
+    $connect = connectDB();
+    $query = $connect->prepare("SELECT * FROM articles WHERE id = ?");
+    $query->execute(array($id));
+    $articleStock =  $query->fetch();
+
+    if ($articleStock['stock'] >= 10) {
+        return "<p class=\"badge text-bg-success\">En Stock</p>";
+    } else if ($articleStock['stock'] < 10 && $articleStock['stock'] >= 1) {
+        return "<p class=\"badge text-bg-warning\">Plus que " . $articleStock['stock'] . " en stock</p>";
+    } else if ($articleStock['stock'] == 0) {
+        return "<p class=\"badge text-bg-danger\">Article epuisé</p>";
+    }
+}
+
+function possiblePurchase($int)
+{
+    if ($int > 0) {
+        return "type=\"submit\"";
+    }
+    else {
+        return "type=\"hidden\"";
     }
 }
 
@@ -260,7 +288,7 @@ function newUser()
 
         if (strlen($nom) >= 2 && strlen($prenom) >= 2 && strlen($email) >= 10 && strlen($mdp) >= 8) {
 
-            if (strlen($nom) <= 20 && strlen($prenom) <= 20 && strlen($email) <= 40 && strlen($mdp) <= 30) {
+            if (strlen($nom) <= 20 && strlen($prenom) <= 20 && strlen($email) <= 40 && strlen($mdp) <= 15) {
 
                 if ((emailExists($email)) == false) {
 
@@ -431,9 +459,9 @@ function changePassword()
 
             echo "<script>alert(\"Mot de passe modifié\")</script>";
 
-            header("Location: profil.php");
+            header("Location: connexion.php");
             exit();
-        } else echo "<script>alert(\"ANouveau mot de passe invalide \")</script>";
+        } else echo "<script>alert(\"Nouveau mot de passe invalide \")</script>";
     } else echo "<script>alert(\"Ancien mot de passe incorrect\")</script>";
 }
 
@@ -465,37 +493,35 @@ function createOrder($numero, $produits)
     $prix = totalWithTaxes();
 
     if (!empty($date) && !empty($prix) && !empty($numero) && !empty($id)) {
-    $query = $connect->prepare("INSERT INTO commandes (id_client,numero,date_commande,prix) VALUES(:id_client, :numero, :date_commande, :prix)");
-    $query->execute(array(
-        'id_client' => $id,
-        'prix' => $prix,
-        'numero' => $numero,
-        'date_commande' => $date,
-    ));
+        $query = $connect->prepare("INSERT INTO commandes (id_client,numero,date_commande,prix) VALUES(:id_client, :numero, :date_commande, :prix)");
+        $query->execute(array(
+            'id_client' => $id,
+            'prix' => $prix,
+            'numero' => $numero,
+            'date_commande' => $date,
+        ));
 
         $id_order = $connect->lastInsertId();
         $query = $connect->prepare("INSERT INTO commande_article (id_commande,id_article,quantite) VALUES(:id_commande, :id_article, :quantite)");
 
-        foreach ($produits as $article)
-        {
-        $query->execute(array(
-            'id_commande' => $id_order,
-            'id_article' => $article['id'],
-            'quantite' => $article['quantity'],
-        ));
-        }  
+        foreach ($produits as $article) {
+            $query->execute(array(
+                'id_commande' => $id_order,
+                'id_article' => $article['id'],
+                'quantite' => $article['quantity'],
+            ));
+        }
 
         $stock = $article['stock'] - $article['quantity'];
-        
+
         $query = $connect->prepare("UPDATE articles SET stock = :stock WHERE id = :id");
         $query->execute(array(
             'id' => $article['id'],
             'stock' => $stock,
         ));
 
-    header("Location: profil.php");
-
-    }   
+        header("Location: profil.php");
+    }
 }
 
 function listOrders()
@@ -506,10 +532,14 @@ function listOrders()
     $query->execute(array($_SESSION['id']));
     $orders = $query->fetchAll();
 
-    foreach ($orders as $clientOrder) {
-       echo "<tr class=\"list-group-item\"><td>". $clientOrder['numero']. "</td><td>" . strftime("%d/%m/%y à %X", strtotime($clientOrder['date_commande'])) . "</td><td>" . $clientOrder['prix'] . "€ </td><td><a href=\"detailcommandes.php?&id=" . $clientOrder['id'] . " \"class=\"btn btn-light\">Voir</a></td></tr>";
+    if (empty($orders)) {
+        echo "<h3>Pas encore de commande passée</h3>";
+    } else {
+        foreach ($orders as $clientOrder) {
+            echo "<tr class=\"list-group-item\"><td>" . $clientOrder['numero'] . "</td><td>" . strftime("%d/%m/%y à %X", strtotime($clientOrder['date_commande'])) . "</td><td>" . $clientOrder['prix'] . "€ </td><td><a href=\"detailcommandes.php?&id=" . $clientOrder['id'] . " \"class=\"btn btn-light\">Voir</a></td></tr>";
+        }
     }
-}	
+}
 
 function getOrderFromId($id)
 {
@@ -519,12 +549,11 @@ function getOrderFromId($id)
     return $query->fetch();
 }
 
-function getInfosFromOrder($id)
+function getArticlesFromOrder($id)
 {
     $connect = connectDB();
-    $query = $connect->prepare("SELECT * FROM commande_article WHERE id_commande = ?");
+    $query = $connect->prepare("SELECT * FROM commande_article ca INNER JOIN articles a ON ca.id_article = a.id WHERE id_commande = ?");
     $query->execute(array($id));
     $articleList = $query->fetchAll();
     return $articleList;
 }
-
