@@ -1,6 +1,6 @@
 <?php
 
-setlocale(LC_TIME, "fr");
+
 
 function connectDB()
 {
@@ -30,7 +30,7 @@ function homeProducts()
 
         echo "
         <div class=\"col home-products\">
-            <div class=\"card\" style=\"width: 18rem;\">
+            <div class=\"card border-success\" style=\"width: 18rem;\">
                 <img src=\" " . $currentProduct['image'] . " \" class=\"card-img-top\">
                 <span class=\"badge text-bg-light\">" . $range['nom'] . "</span>
                 <div class=\"card-body\">
@@ -89,13 +89,13 @@ function articlesByRange()
         echo
         "<nav class=\"navbar range-name\" style=\"background-color: #1987546b; border-radius: 10px;\">
         <div class=\"container-fluid\">
-          <h3 class=\"navbar-brand mb-0 h1\" style=\"text-transform: capitalize; color: black !important;\">" . $currentRange['nom'] . "s</h3>
+          <h3 class=\"navbar-brand mb-0 h1\" style=\"text-transform: capitalize; color: black !important; font-weight : bold;\">" . $currentRange['nom'] . "s</h3>
         </div>
       </nav>";
         foreach ($productByRange as $product) {
             echo
             "<div class=\"col range-products\">
-            <div class=\"card\" style=\"width: 18rem;\">
+            <div class=\"card border-success\" style=\"width: 18rem;\">
                 <img src=\" " . $product['image'] . " \" class=\"card-img-top\">
                 <div class=\"card-body\">
                     <h3 class=\"card-title\">" . $product['nom'] . " </h3>
@@ -263,23 +263,23 @@ function ordersTaxes($articles)
 
 function actualDate()
 {
-    $actualDate = date('j F Y');
-    setlocale(LC_TIME, "fr_FR");
-    echo date("j M Y", strtotime($actualDate));
+    $actualDate = date('d M Y');
+    setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
+    echo date("d M Y", strtotime($actualDate));
 }
 
 function sendDate()
 {
-    $sendDate = date('j F Y', strtotime("+2 days"));
-    setlocale(LC_TIME, "fr_FR");
-    echo date("j M Y", strtotime($sendDate));
+    $sendDate = date('d M Y', strtotime("+2 days"));
+    setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
+    echo date("d M Y", strtotime($sendDate));
 }
 
 function receiveDate()
 {
-    $receiveDate = date('D j M Y', strtotime("+5 days"));
-    setlocale(LC_TIME, "fr_FR");
-    echo date("j M Y", strtotime($receiveDate));
+    $receiveDate = date('d M Y', strtotime("+5 days"));
+    setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
+    echo date("d M Y", strtotime($receiveDate));
 }
 
 // Gestion utilisateurs
@@ -317,10 +317,10 @@ function newUser()
 
                         $query = $connect->prepare("INSERT INTO clients (nom,prenom,email,mot_de_passe) VALUES(:nom, :prenom, :email, :mot_de_passe)");
                         $query->execute(array(
-                            'nom' => $nom,
-                            'prenom' => $prenom,
-                            'email' => $email,
-                            'mot_de_passe' => $mdp_secu,
+                            'nom' => htmlspecialchars($nom),
+                            'prenom' => htmlspecialchars($prenom),
+                            'email' => htmlspecialchars($email),
+                            'mot_de_passe' => htmlspecialchars($mdp_secu),
                         ));
 
                         $id = $connect->lastInsertId();
@@ -329,15 +329,15 @@ function newUser()
                             $query = $connect->prepare("INSERT INTO adresses (id_client,adresse,code_postal,ville) VALUES(:id_client, :adresse, :code_postal, :ville)");
                             $query->execute(array(
                                 'id_client' => $id,
-                                'adresse' => $adresse,
-                                'code_postal' => $cp,
-                                'ville' => $ville,
+                                'adresse' => htmlspecialchars($adresse),
+                                'code_postal' => htmlspecialchars($cp),
+                                'ville' => htmlspecialchars($ville),
                             ));
                         }
 
                         echo "<script>alert(\"Inscription réussie\")</script>";
 
-                        header("Location: profil.php");
+                        header("Location: connexion.php");
                         exit();
                     } else echo "<script>alert(\"Mot de passe incorrect\")</script>";
                 } else echo "<script>alert(\"Cette adresse email est déjà utilisée\")</script>";
@@ -356,10 +356,10 @@ function addAddress($user)
 
     $query = $connect->prepare("INSERT INTO adresses (id_client,adresse,code_postal,ville) VALUES(:id_client, :adresse, :code_postal, :ville)");
     $query->execute(array(
-        'id_client' => $user,
-        'adresse' => $adresse,
-        'code_postal' => $cp,
-        'ville' => $ville,
+        'id_client' => htmlspecialchars($user),
+        'adresse' => htmlspecialchars($adresse),
+        'code_postal' => htmlspecialchars($cp),
+        'ville' => htmlspecialchars($ville),
     ));
 }
 
@@ -518,8 +518,8 @@ function createOrder($numero, $produits)
         $query = $connect->prepare("INSERT INTO commandes (id_client,numero,date_commande,prix) VALUES(:id_client, :numero, :date_commande, :prix)");
         $query->execute(array(
             'id_client' => $id,
-            'prix' => $prix,
-            'numero' => $numero,
+            'prix' => htmlspecialchars($prix),
+            'numero' => htmlspecialchars($numero),
             'date_commande' => $date,
         ));
 
@@ -558,7 +558,7 @@ function listOrders()
         echo "<h3>Pas encore de commande passée</h3>";
     } else {
         foreach ($orders as $clientOrder) {
-            echo "<tr class=\"list-group-item\"><td>" . $clientOrder['numero'] . "</td><td>" . date("j F Y à G:i", strtotime($clientOrder['date_commande'])) . "</td><td>" . $clientOrder['prix'] . "€ </td><td><a href=\"detailcommandes.php?&id=" . $clientOrder['id'] . " \"class=\"btn btn-outline-success\">Voir</a></td></tr>";
+            echo "<tr class=\"list-group-item\"><td>" . $clientOrder['numero'] . "</td><td>" .  date("d M Y à G:i", strtotime($clientOrder['date_commande'])) . "</td><td>" . $clientOrder['prix'] . "€ </td><td><a href=\"detailcommandes.php?&id=" . $clientOrder['id'] . " \"class=\"btn btn-outline-success\">Voir</a></td></tr>";
         }
     }
 }

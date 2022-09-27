@@ -23,7 +23,7 @@
 </head>
 
 <?php
-setlocale(LC_TIME, "fr");
+setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
 
 if (isset($_POST['deconnexion'])) 
 {

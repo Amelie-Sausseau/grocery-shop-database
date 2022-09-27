@@ -14,7 +14,7 @@ if (isset($_POST['newUser'])) {
 
 <div class="container">
 
-    <div class="form">
+    <div class="form signin">
         <h2>Créer mon compte</h2>
         <form action="inscription.php" method="post" class="form-body">
             <div class="form-object" class="lastname">

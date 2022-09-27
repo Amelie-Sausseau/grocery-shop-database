@@ -24,6 +24,7 @@ if (isset($_POST['updatePassword'])) {
             <div class="form-object" class="password">
                 <label>Nouveau mot de passe:</label>
                 <input name="newPassword" type="password" placeholder="Mot de passe">
+                <div id="newPasswordHelp" class="form-text">Entre 8 et 15 caractères, minimum 1 lettre, 1 chiffre et 1 caractère spécial</div>
             </div>
 
             <input type="hidden" name="updatePassword">
