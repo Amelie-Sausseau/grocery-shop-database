@@ -37,7 +37,7 @@ if (isset($_POST['deconnexion']))
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.php">Epicerie</a>
+      <img class="navbar-brand" href="index.php" src="images/Fruits & légumes (400 × 200 px) (200 × 150 px).png">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -50,7 +50,7 @@ if (isset($_POST['deconnexion']))
             <a class="nav-link <?php if(basename($_SERVER['SCRIPT_NAME']) == "gammes.php") {echo "active";} ?>" href="gammes.php">Gammes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php if(basename($_SERVER['SCRIPT_NAME']) == "panier.php") {echo "active";} ?>" href="panier.php">Panier (<?=(count($_SESSION['cart']))?>)</a>
+            <a class="nav-link <?php if(basename($_SERVER['SCRIPT_NAME']) == "panier.php") {echo "active";} ?>" href="panier.php"><?= navbarCart() ?></a>
           </li>
         </ul>
       </div>
@@ -58,7 +58,7 @@ if (isset($_POST['deconnexion']))
         <?php if(!isset($_SESSION['id'])) {echo "<a class=\"btn btn-outline-light\" type=\"submit\" href=\"connexion.php\">Connexion</a>";} ?>
         <?php if(isset($_SESSION['id'])) {echo "<a class=\"btn btn-outline-light\" type=\"submit\" href=\"profil.php\">Mon compte</a>";} ?>
         <?php if(isset($_SESSION['id'])) {echo 
-        "<form action=\"profil.php\" method=\"post\">
+        "<form action=\"profil.php\" method=\"post\" class=\"my-auto\">
         <input type=\"hidden\" name=\"deconnexion\">
         <input class=\"btn btn-outline-light\" type=\"submit\" value=\"Déconnexion\">
         </form>";} ?>

@@ -17,5 +17,5 @@ $product = getArticleFromId($id); ?>
     <?= showStocks($product['id']) ?>
     <p><?= $product['description_detaillee'] ?></p>
     <p><?= $product['prix'] ?>€/kg</p>
-    <?php if ($product['stock']>0) {echo "<a href=\"panier.php\"><button type='submit' class=\"btn btn-dark\" name='cart' value='".addToCart($product)."'>Acheter</button> </a>";} ?>
+    <?php if ($product['stock']>0) {echo "<a href=\"panier.php\"><button type='submit' class=\"btn btn-success\" name='cart' value='".addToCart($product)."'>Acheter</button> </a>";} ?>
 </div>

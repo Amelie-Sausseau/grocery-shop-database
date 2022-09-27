@@ -1,5 +1,7 @@
 <?php
 
+setlocale(LC_TIME, "fr");
+
 function connectDB()
 {
     $username = 'root';
@@ -40,7 +42,7 @@ function homeProducts()
                         <a href=\"produit.php?&id=" . $currentProduct['id'] . " \"class=\"btn btn-outline-secondary\">Détails produit</a>
                         <form action=\"panier.php\" method=\"post\">
                         <input type=\"hidden\" name=\"addProduct\" value=\"" . $currentProduct['id'] . " \">
-                        <input ".possiblePurchase($currentProduct['stock'])." name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
+                        <input " . possiblePurchase($currentProduct['stock']) . " name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
                     </form>
                     </div>
                 </div>
@@ -85,9 +87,9 @@ function articlesByRange()
     foreach ($allRanges as $currentRange) {
         $productByRange = getArticleFromRange($currentRange['id']);
         echo
-        "<nav class=\"navbar bg-light  range-name\">
+        "<nav class=\"navbar range-name\" style=\"background-color: #1987546b; border-radius: 10px;\">
         <div class=\"container-fluid\">
-          <h3 class=\"navbar-brand mb-0 h1\" style=\"text-transform: capitalize; color: black !important\">" . $currentRange['nom'] . "s</h3>
+          <h3 class=\"navbar-brand mb-0 h1\" style=\"text-transform: capitalize; color: black !important;\">" . $currentRange['nom'] . "s</h3>
         </div>
       </nav>";
         foreach ($productByRange as $product) {
@@ -104,7 +106,7 @@ function articlesByRange()
                         <a href=\"produit.php?&id=" . $product['id'] . " \"class=\"btn btn-outline-secondary\">Détails produit</a>
                         <form action=\"panier.php\" method=\"post\">
                         <input type=\"hidden\" name=\"addProduct\" value=\"" . $product['id'] . " \">
-                        <input ".possiblePurchase($product['stock'])." name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
+                        <input " . possiblePurchase($product['stock']) . " name=\"cart\" class=\"btn btn-dark btn-sm\" value=\"Acheter\">
                         </form>
                     </div>
                 </div>
@@ -124,7 +126,7 @@ function showStocks($id)
     if ($articleStock['stock'] >= 10) {
         return "<p class=\"badge text-bg-success\">En Stock</p>";
     } else if ($articleStock['stock'] < 10 && $articleStock['stock'] >= 1) {
-        return "<p class=\"badge text-bg-warning\">Plus que " . $articleStock['stock'] . " en stock</p>";
+        return "<p class=\"badge text-bg-warning\">Plus que " . $articleStock['stock'] . " kg en stock</p>";
     } else if ($articleStock['stock'] == 0) {
         return "<p class=\"badge text-bg-danger\">Article epuisé</p>";
     }
@@ -134,8 +136,7 @@ function possiblePurchase($int)
 {
     if ($int > 0) {
         return "type=\"submit\"";
-    }
-    else {
+    } else {
         return "type=\"hidden\"";
     }
 }
@@ -208,6 +209,15 @@ function totalPerProduct($price, $quantity)
     return number_format($totalPerProduct, 2, ',', ' ');
 }
 
+function navbarCart() {
+    if (isset($_SESSION['cart'])) {
+        return "Panier (".count($_SESSION['cart']).")";
+    }
+    else {
+        return "Panier (0)";
+    }
+}
+
 // Calculs prix / taxes / dates
 
 function totalPrice()
@@ -242,25 +252,34 @@ function totalWithTaxes()
     return number_format($totalWithTaxes, 2, ',', ' ');
 }
 
+function ordersTaxes($articles)
+{
+    $taxes = 0;
+    foreach ($articles as $product) {
+        $taxes += 2.5 * $product['quantite'];
+    }
+    return number_format($taxes, 2, ',', ' ');
+}
+
 function actualDate()
 {
     $actualDate = date('j F Y');
     setlocale(LC_TIME, "fr_FR");
-    echo strftime("%A %d %B %G", strtotime($actualDate));
+    echo date("j M Y", strtotime($actualDate));
 }
 
 function sendDate()
 {
     $sendDate = date('j F Y', strtotime("+2 days"));
     setlocale(LC_TIME, "fr_FR");
-    echo strftime("%A %d %B %G", strtotime($sendDate));
+    echo date("j M Y", strtotime($sendDate));
 }
 
 function receiveDate()
 {
-    $receiveDate = date('j F Y', strtotime("+5 days"));
+    $receiveDate = date('D j M Y', strtotime("+5 days"));
     setlocale(LC_TIME, "fr_FR");
-    echo strftime("%A %d %B %G", strtotime($receiveDate));
+    echo date("j M Y", strtotime($receiveDate));
 }
 
 // Gestion utilisateurs
@@ -468,6 +487,9 @@ function changePassword()
 function deconnexion()
 {
     if (isset($_POST['deconnexion'])) {
+        if (isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
+        }
         session_destroy();
         unset($_session['id']);
         header("Location: index.php");
@@ -536,7 +558,7 @@ function listOrders()
         echo "<h3>Pas encore de commande passée</h3>";
     } else {
         foreach ($orders as $clientOrder) {
-            echo "<tr class=\"list-group-item\"><td>" . $clientOrder['numero'] . "</td><td>" . strftime("%d/%m/%y à %X", strtotime($clientOrder['date_commande'])) . "</td><td>" . $clientOrder['prix'] . "€ </td><td><a href=\"detailcommandes.php?&id=" . $clientOrder['id'] . " \"class=\"btn btn-light\">Voir</a></td></tr>";
+            echo "<tr class=\"list-group-item\"><td>" . $clientOrder['numero'] . "</td><td>" . date("j F Y à G:i", strtotime($clientOrder['date_commande'])) . "</td><td>" . $clientOrder['prix'] . "€ </td><td><a href=\"detailcommandes.php?&id=" . $clientOrder['id'] . " \"class=\"btn btn-outline-success\">Voir</a></td></tr>";
         }
     }
 }

@@ -6,14 +6,23 @@ body {
 }
 
 /*Header + footer*/
-.navbar-brand,
-.navbar-item a {
-    color: white !important;
+.navbar-brand {
+    width: 5vw;
+}
+
+.active {
+    color: #198754 !important;
 }
 
 .btn-user {
     gap: 5% !important;
     min-width: 30vw !important;
+}
+
+.btn-outline-light:hover {
+    border: #198754 !important;
+    color: #198754 !important;
+    background-color: lightgrey;
 }
 
 .d-flex {
@@ -30,12 +39,22 @@ body {
     font-size: 14px !important;
     margin-left: auto;
     margin-right: auto;
+    color: white !important;
 }
 
 /*Accueil*/
 .title {
     text-align: center !important;
     margin: 3rem 0!important;
+}
+
+.title h1 {
+    background-image: linear-gradient(120deg, #1D976C,#1987546b 100%);
+    background-repeat: no-repeat;
+    background-size: 50% 0.5em;
+    background-position: 50% 90%;
+    transition: background-size 0.25s ease-in;
+    margin-left: 3rem;
 }
 
 .add-text {
@@ -50,7 +69,6 @@ body {
 
 .card-body h3 {
     font-weight: bold;
-    margin: 1rem 0;
 }
 
 .card img {
@@ -68,16 +86,14 @@ body {
 }
 
 .card-btns .btn {
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.5rem !important;
 }
 
 .col{
     text-align: -webkit-center !important;
 }
 
-
-.three-lasts,
-.range {
+.three-lasts {
     padding: 3rem;
 }
 
@@ -100,7 +116,7 @@ body {
     margin-bottom: 3rem;
 }
 
-.detail-product a {
+.detail-product .btn {
     margin-bottom: 1.5rem;
 }
 
@@ -173,12 +189,22 @@ body {
     display: flex;
     justify-content: center;
     margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
 }
 
 .form h2,
 .not-registered h3 {
     text-align: center;
     margin: 2rem;
+}
+
+.form h2 {
+    background-image: linear-gradient(120deg, #1D976C,#1987546b 100%);
+    background-repeat: no-repeat;
+    background-size: 30% 0.5em;
+    background-position: 50% 90%;
+    transition: background-size 0.25s ease-in;
+    margin-left: 3rem;
 }
 
 .form-body {
@@ -189,7 +215,7 @@ body {
 
 .form {
     border: 1px solid black;
-    padding: 2.5rem;
+    padding: 1rem;
     margin-top: 2.5rem;
 }
 
@@ -229,11 +255,16 @@ body {
 
 .card-user i {
     font-size: 56px;
+    color: #1987546b!important;
 }
 
 /*Gammes*/
-.col .range-products {
-    margin: 2rem !important;
+.range {
+    padding: 1rem 3rem;
+}
+
+.range-products {
+    margin: 1rem !important;
 }
 
 @media (max-width: 480px)
@@ -262,4 +293,26 @@ body {
 .table-details td,
 .table-details th {
     min-width: 15vw !important;
+}
+
+.table-details p {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    font-weight: bold;
+}
+
+.btn-back {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.cart-page h3 {
+    background-image: linear-gradient(120deg, #1D976C,#1987546b 100%);
+    background-repeat: no-repeat;
+    background-size: 20% 0.5em;
+    background-position: 50% 90%;
+    transition: background-size 0.25s ease-in;
+    margin-left: 3rem;
 }

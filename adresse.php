@@ -13,7 +13,7 @@ if (isset($_POST['changeAddress'])) {
 ?>
 
 <header>
-    <?php require '_header.tpl.php';?>
+    <?php require '_header.tpl.php'; ?>
 </header>
 
 <div class="container">
@@ -34,8 +34,11 @@ if (isset($_POST['changeAddress'])) {
                 <input name="newCity" type="text" placeholder="Ville" value="<?= $adresse['ville'] ?>">
             </div>
             <input type="hidden" name="newUser">
-            <input type="submit" name="changeAddress" class="btn btn-dark btn-sm" value="Valider">
+            <input type="submit" name="changeAddress" class="btn btn-success btn-sm" value="Valider">
         </form>
     </div>
-    
+    <div class="btn-back">
+        <a href="profil.php" type="button" class="btn btn-success">Mon compte</a>
+    </div>
+
 </div>

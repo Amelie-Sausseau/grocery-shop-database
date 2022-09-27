@@ -19,7 +19,7 @@ $articles = getArticlesFromOrder($id);
 </header>
 
 <div class="container">
-    <h3>Commande n°<?= $order['numero'] ?> du <?= strftime("%d/%m/%y", strtotime($order['date_commande'])) ?></h3>
+    <h3>Commande n°<?= $order['numero'] ?> du <?= date("d/m/Y", strtotime($order['date_commande'])) ?></h3>
 
     <div class="table-details">
     <table>
@@ -37,6 +37,11 @@ $articles = getArticlesFromOrder($id);
         }
         ?>
     </table>
+    <p class="taxes">Montant des frais de livraison : <?= ordersTaxes($articles) ?> €</p>
+    <div class="btn-back">
+    <a href="commandes.php" type="button" class="btn btn-success">Toutes les commandes</a>
     </div>
+    </div>
+
 </div>
 

@@ -4,7 +4,7 @@
 <footer>
     <nav class="navbar fixed-bottom bg-dark">
         <div class="container-fluid  footer">
-            <a class="navbar-brand" href="index.php">Epicerie - 2022</a>
+            <a class="navbar-brand" href="index.php">Green Garden - 2022</a>
         </div>
     </nav>
 </footer>

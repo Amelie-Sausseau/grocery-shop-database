@@ -10,7 +10,7 @@ session_start();
 
 <div class="container-xxl">
     <div class="title">
-        <h1>Bienvenue sur l'épicerie en ligne</h1>
+        <h1>Bienvenue sur Green Garden</h1>
         <aside>Retrouvez ici tous vos produits d'épicerie livrés directement chez vous !</aside>
     </div>
 

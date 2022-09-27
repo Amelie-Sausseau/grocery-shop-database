@@ -21,6 +21,8 @@ session_start();
             </tr>
             <?= listOrders() ?>
         </table>
-
+    </div>
+    <div class="btn-back">
+        <a href="profil.php" type="button" class="btn btn-success">Mon compte</a>
     </div>
 </div>

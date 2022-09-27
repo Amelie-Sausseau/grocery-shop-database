@@ -81,7 +81,7 @@ if (isset($_POST['updateUser'])) {
             </div>
 
             <input type="hidden" name="updateUser">
-            <input type="submit" name="modifier" class="btn btn-dark btn-sm" value="Enregistrer">
+            <input type="submit" name="modifier" class="btn btn-success btn-sm" value="Enregistrer">
         </form>
 
     </div>
@@ -102,7 +102,7 @@ if (isset($_POST['updateUser'])) {
                 <input name="newCity" type="text" placeholder="Ville" value="<?= $adresse['ville'] ?>">
             </div>
             <input type="hidden" name="newUser">
-            <input type="submit" name="changeAddress" class="btn btn-dark btn-sm" value="Valider">
+            <input type="submit" name="changeAddress" class="btn btn-success btn-sm" value="Valider">
         </form>
     </div>
 
@@ -110,7 +110,7 @@ if (isset($_POST['updateUser'])) {
     <form method="post">
         <h4>Total à régler: <?= totalWithTaxes() ?> €</h4>
         <p>(Frais de port : <?= taxes() ?> €)</p>
-        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         Valider la commande</button>
     </form>
     </div>
@@ -132,7 +132,7 @@ if (isset($_POST['updateUser'])) {
 
                 <div class="modal-footer">
                         <input type="hidden" name="validationId">
-                        <input type="submit" name="validation" class="btn btn-dark btn-sm" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop" value='Fermer'>
+                        <input type="submit" name="validation" class="btn btn-success btn-sm" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop" value='Fermer'>
                     </form>
                 </div>
             </div>

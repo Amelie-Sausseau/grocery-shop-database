@@ -31,9 +31,11 @@ if (isset($_POST['updateUser'])) {
             </div>
             
             <input type="hidden" name="updateUser">
-            <input type="submit" name="modifier" class="btn btn-dark btn-sm" value="Enregistrer">
+            <input type="submit" name="modifier" class="btn btn-success btn-sm" value="Enregistrer">
         </form>
-
+    </div>
+    <div class="btn-back">
+        <a href="profil.php" type="button" class="btn btn-success">Mon compte</a>
     </div>
     
 </div>

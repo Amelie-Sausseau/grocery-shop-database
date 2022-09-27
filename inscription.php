@@ -47,7 +47,7 @@ if (isset($_POST['newUser'])) {
                 <input name="city" type="text" placeholder="Ville">
             </div>
             <input type="hidden" name="newUser">
-            <input type="submit" name="inscription" class="btn btn-dark btn-sm" value="S'inscrire">
+            <input type="submit" name="inscription" class="btn btn-success btn-sm" value="S'inscrire">
         </form>
 
     </div>

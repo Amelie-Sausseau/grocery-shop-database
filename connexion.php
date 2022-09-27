@@ -26,7 +26,7 @@ if (isset($_POST['LogIn'])) {
                 <input type="password" name="connect_pwd" placeholder="Mot de passe">
             </div>
             <input type="hidden" name="LogIn">
-            <input type="submit" name="connexion" class="btn btn-dark btn-sm" value="Se connecter">
+            <input type="submit" name="connexion" class="btn btn-success btn-sm" value="Se connecter">
         </form>
     </div>
 
@@ -34,7 +34,7 @@ if (isset($_POST['LogIn'])) {
     <h3>Pas encore de compte ?</h3>
     <form action="inscription.php" method="post" class="btn-inscription">
             <input type="hidden" name="signIn">
-            <input type="submit" name="sign" class="btn btn-dark btn-sm" value="S'inscrire">
+            <input type="submit" name="sign" class="btn btn-success btn-sm" value="S'inscrire">
         </form>
     </div>
 
