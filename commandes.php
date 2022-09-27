@@ -14,11 +14,6 @@ session_start();
 
     <div class="table">
         <table>
-            <tr class="list-group-item">
-                <th>Numéro de commande</th>
-                <th>Date de commande</th>
-                <th>Prix</th>
-            </tr>
             <?= listOrders() ?>
         </table>
     </div>

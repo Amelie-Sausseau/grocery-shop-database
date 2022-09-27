@@ -64,7 +64,7 @@ function getArticleFromId($id)
 function getArticleFromRange($id)
 {
     $connect = connectDB();
-    $query = $connect->prepare("SELECT * FROM articles WHERE id_gamme = ?");
+    $query = $connect->prepare("SELECT * FROM articles WHERE id_gamme = ? ORDER BY nom");
     $query->execute(array($id));
     return $query->fetchAll();
 }
@@ -293,7 +293,6 @@ function checkPassword($password)
 function newUser()
 {
     $connect = connectDB();
-
 
     if (!empty($_POST['lastname']) && !empty($_POST['firstname']) && !empty($_POST['email']) && !empty($_POST['password'])) {
         $nom = strip_tags($_POST['lastname']);
@@ -555,8 +554,13 @@ function listOrders()
     $orders = $query->fetchAll();
 
     if (empty($orders)) {
-        echo "<h3>Pas encore de commande passée</h3>";
+        echo "<h4>Pas encore de commande passée</h4>";
     } else {
+        echo "<tr class=\"list-group-item\">
+        <th>Numéro de commande</th>
+        <th>Date de commande</th>
+        <th>Prix</th>
+        </tr>";
         foreach ($orders as $clientOrder) {
             echo "<tr class=\"list-group-item\"><td>" . $clientOrder['numero'] . "</td><td>" .  date("d M Y à G:i", strtotime($clientOrder['date_commande'])) . "</td><td>" . $clientOrder['prix'] . "€ </td><td><a href=\"detailcommandes.php?&id=" . $clientOrder['id'] . " \"class=\"btn btn-outline-success\">Voir</a></td></tr>";
         }
